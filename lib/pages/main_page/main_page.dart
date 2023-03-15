@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:task_2/models/value_setter_model.dart';
 import 'package:task_2/utils/image_path.dart';
-import 'package:task_2/views/nike_products.dart';
-
-import '../utils/text_styles.dart';
+import 'package:task_2/pages/main_page/views/nike_products.dart';
+import '../../mocks/products_mock.dart';
+import '../../utils/text_styles.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -28,15 +28,17 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
-  void _resetValue() {
-    setState(() {
-      for (var i = 0; i < NikeProducts.products.length; i++) {
-        NikeProducts.products[i].color = Colors.white;
-      }
-      count = 0;
-      totalSum = 0;
-    });
-  }
+
+
+  // void _resetValue() {
+  //   setState(() {
+  //     for (var i = 0; i < ProductsMock.products.length; i++) {
+  //       ProductsMock.products[i].color = Colors.white;
+  //     }
+  //     count = 0;
+  //     totalSum = 0;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +77,11 @@ class _MainPageState extends State<MainPage> {
           ),
           IconButton(
             splashRadius: 16,
-            onPressed: _resetValue,
+            onPressed: () {
+              Navigator.of(context).pushNamed(
+                '/third',
+              );
+            },
             icon: const Icon(
               Icons.shopping_cart_outlined,
               color: Colors.black,

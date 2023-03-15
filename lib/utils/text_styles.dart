@@ -20,7 +20,7 @@ abstract class TextStyles {
     fontSize: 14,
   );
 
-  static const descriptionText = TextStyle(
+  static const nameText = TextStyle(
     fontSize: 15,
     color: Colors.black54,
   );
@@ -32,5 +32,10 @@ abstract class TextStyles {
   static const priceText = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w500,
+  );
+
+  static const totalPriceText = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontSize: 16,
   );
 }

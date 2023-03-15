@@ -1,54 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:task_2/utils/image_path.dart';
-import 'package:task_2/views/product_description.dart';
 
-import '../models/products_model.dart';
-import '../models/value_setter_model.dart';
-import '../utils/text_styles.dart';
+import '../../../mocks/products_mock.dart';
+import '../../../models/products_model.dart';
+import '../../../models/value_setter_model.dart';
+import '../../../utils/text_styles.dart';
 
 class NikeProducts extends StatefulWidget {
   final ValueSetter<ValueSetterModel> outputData;
 
   const NikeProducts({Key? key, required this.outputData}) : super(key: key);
-
-  static List<ProductsModel> products = [
-    ProductsModel(
-      ImagePath.product_1,
-      'Nike Tech Fleece Men',
-      'XS, S, M, L, XL',
-      '130',
-    ),
-    ProductsModel(
-      ImagePath.product_2,
-      'Nike Tech Fleece Women',
-      'XS, S, M, L, XL',
-      '120',
-    ),
-    ProductsModel(
-      ImagePath.product_3,
-      'Nike Tech Fleece Joggers',
-      'XS, S, M, L, XL',
-      '120',
-    ),
-    ProductsModel(
-      ImagePath.product_4,
-      'Nike Joggers',
-      'XS, S, M, L, XL',
-      '80',
-    ),
-    ProductsModel(
-      ImagePath.product_5,
-      'Nike Tech Fleece Hoodie',
-      'XS, S, M, L, XL',
-      '100',
-    ),
-    ProductsModel(
-      ImagePath.product_6,
-      'Nike Tech Fleece Joggers',
-      'XS, S, M, L, XL',
-      '88',
-    ),
-  ];
 
   @override
   State<NikeProducts> createState() => _NikeProductsState();
@@ -60,7 +20,7 @@ class _NikeProductsState extends State<NikeProducts> {
     return Padding(
       padding: const EdgeInsets.only(left: 3),
       child: Wrap(
-        children: NikeProducts.products.map(
+        children: ProductsMock.products.map(
           (product) {
             return Row(
               mainAxisSize: MainAxisSize.min,
@@ -115,8 +75,8 @@ class _NikeProductsState extends State<NikeProducts> {
           height: 8,
         ),
         Text(
-          product.description,
-          style: TextStyles.descriptionText,
+          product.name,
+          style: TextStyles.nameText,
         ),
         const SizedBox(
           height: 4,
