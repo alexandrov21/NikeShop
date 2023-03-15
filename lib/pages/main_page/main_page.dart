@@ -56,10 +56,6 @@ class _MainPageState extends State<MainPage> {
             ),
           ),
         ),
-        leading: const Icon(
-          Icons.keyboard_backspace_outlined,
-          color: Colors.black,
-        ),
         actions: [
           Column(
             mainAxisSize: MainAxisSize.min,

@@ -46,6 +46,10 @@ class _CartPageState extends State<CartPage> {
     print('$totalSum dvd');
   }
 
+  // void offTakeItem(productAndAmount){
+  //   if(productAndAmount) {}
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,10 +86,49 @@ class _CartPageState extends State<CartPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Image(
-                                  image: AssetImage(
-                                      productsAndAmount.product.photo),
-                                  height: 180,
+                                Stack(
+                                  children: [
+                                    Image(
+                                      image: AssetImage(
+                                          productsAndAmount.product.photo),
+                                      height: 180,
+                                    ),
+                                    Positioned(
+                                      top: 8,
+                                      right: 8,
+                                      child: InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            if (productsAndAmount.amount > 1) {
+                                              productsAndAmount.amount--;
+                                              totalSum = totalSum -
+                                                  int.parse(productsAndAmount
+                                                      .product.price);
+                                            } else {
+                                              ProductsMock.saveProducts
+                                                  .remove(productsAndAmount);
+                                              totalSum = totalSum -
+                                                  int.parse(productsAndAmount
+                                                      .product.price);
+                                            }
+                                          });
+                                          print('InlWell is working');
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.all(4),
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white,
+                                          ),
+                                          child: const Icon(
+                                            Icons.remove,
+                                            color: Colors.black54,
+                                            size: 16,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 Text(
                                   productsAndAmount.product.name,
