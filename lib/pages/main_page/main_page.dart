@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:task_2/models/value_setter_model.dart';
 import 'package:task_2/utils/image_path.dart';
 import 'package:task_2/pages/main_page/views/nike_products.dart';
-import '../../mocks/products_mock.dart';
 import '../../utils/text_styles.dart';
 
 class MainPage extends StatefulWidget {
@@ -13,20 +12,20 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int count = 0;
-  int totalSum = 0;
+  // int count = 0;
+  // int totalSum = 0;
 
-  void checkForOperationAndValue(ValueSetterModel params) {
-    setState(() {
-      if (params.isIncrement == true) {
-        count++;
-        totalSum = totalSum + params.price;
-      } else {
-        count = count - 1;
-        totalSum = totalSum - params.price;
-      }
-    });
-  }
+  // void checkForOperationAndValue(ValueSetterModel params) {
+  //   setState(() {
+  //     if (params.isIncrement == true) {
+  //       count++;
+  //       totalSum = totalSum + params.price;
+  //     } else {
+  //       count = count - 1;
+  //       totalSum = totalSum - params.price;
+  //     }
+  //   });
+  // }
 
 
 
@@ -49,7 +48,7 @@ class _MainPageState extends State<MainPage> {
         title: const Align(
           alignment: Alignment.center,
           child: Padding(
-            padding: EdgeInsets.only(left: 52),
+            padding: EdgeInsets.only(left: 16),
             child: Image(
               image: AssetImage(ImagePath.userImage),
               height: 56,
@@ -57,20 +56,20 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
         actions: [
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text(
-                'Items: $count',
-                style: TextStyles.itemCounterText,
-              ),
-              Text(
-                'Total Price: $totalSum \$',
-                style: TextStyles.totalPriceCounterText,
-              ),
-            ],
-          ),
+          // Column(
+          //   mainAxisSize: MainAxisSize.min,
+          //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //   children: [
+          //     Text(
+          //       'Items: $count',
+          //       style: TextStyles.itemCounterText,
+          //     ),
+          //     Text(
+          //       'Total Price: $totalSum \$',
+          //       style: TextStyles.totalPriceCounterText,
+          //     ),
+          //   ],
+          // ),
           IconButton(
             splashRadius: 16,
             onPressed: () {
@@ -90,8 +89,8 @@ class _MainPageState extends State<MainPage> {
         children: [
           _buildFiltersAndSorting(),
           const SizedBox(height: 12),
-          NikeProducts(
-            outputData: (params) => checkForOperationAndValue(params),
+          const NikeProducts(
+            //outputData: (params) => checkForOperationAndValue(params),
           ),
         ],
       ),

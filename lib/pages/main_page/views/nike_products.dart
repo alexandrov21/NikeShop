@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../../../mocks/products_mock.dart';
 import '../../../models/products_model.dart';
-import '../../../models/value_setter_model.dart';
 import '../../../utils/text_styles.dart';
 
 class NikeProducts extends StatefulWidget {
-  final ValueSetter<ValueSetterModel> outputData;
 
-  const NikeProducts({Key? key, required this.outputData}) : super(key: key);
+  const NikeProducts({Key? key,}) : super(key: key);
 
   @override
   State<NikeProducts> createState() => _NikeProductsState();
@@ -33,27 +31,10 @@ class _NikeProductsState extends State<NikeProducts> {
                   color: product.color,
                   child: InkWell(
                     onTap: () {
-                      if (product.color == Colors.white) {
-                        product.color = Colors.grey.withOpacity(0.3);
-                        widget.outputData(
-                          ValueSetterModel(
-                            true,
-                            int.parse(product.price),
-                          ),
-                        );
-                        Navigator.of(context).pushNamed(
-                          '/second',
-                          arguments: product,
-                        );
-                      } else {
-                        product.color = Colors.white;
-                        widget.outputData(
-                          ValueSetterModel(
-                            false,
-                            int.parse(product.price),
-                          ),
-                        );
-                      }
+                      Navigator.of(context).pushNamed(
+                        '/second',
+                        arguments: product,
+                      );
                     },
                     child: _buildTileProduct(product),
                   ),
