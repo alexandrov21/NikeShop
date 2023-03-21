@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:task_2/mocks/products_mock.dart';
+import 'package:task_2/models/product_in_cart_model.dart';
+import '../../utils/app_colors.dart';
+import '../../utils/app_strings.dart';
 import '../../utils/image_path.dart';
 import '../../utils/text_styles.dart';
 
@@ -45,8 +48,10 @@ class _CartPageState extends State<CartPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(
+          color: AppColors.iconBack,
+        ),
+        backgroundColor: AppColors.appBarBackground,
         elevation: 0,
         title: const Align(
           alignment: Alignment.center,
@@ -59,85 +64,91 @@ class _CartPageState extends State<CartPage> {
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          ListView(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: Wrap(
-                  children: ProductsMock.saveProducts.map(
-                    (productsAndAmount) {
-                      return Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(4),
-                            child: _buildTileProduct(productsAndAmount),
-                          ),
-                        ],
-                      );
-                    },
-                  ).toList(),
-                ),
-              ),
-              const SizedBox(
-                height: 96,
-                width: double.infinity,
-              ),
-            ],
-          ),
-          _buildTotalPriceBar(),
-        ],
-      ),
+      body: _buildBody(),
     );
   }
-  Widget _buildTileImage(productsAndAmount){
+
+  Widget _buildBody() {
+    return Stack(
+      children: [
+        ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: Wrap(
+                children: ProductsMock.saveProducts.map(
+                  (productsAndAmount) {
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: _buildTileProduct(productsAndAmount),
+                        ),
+                      ],
+                    );
+                  },
+                ).toList(),
+              ),
+            ),
+            const SizedBox(
+              height: 96,
+              width: double.infinity,
+            ),
+          ],
+        ),
+        _buildTotalPriceBar(),
+      ],
+    );
+  }
+
+  Widget _buildTileImage(ProductInCartModel productsAndAmount) {
     return Stack(
       children: [
         Image(
-          image: AssetImage(
-              productsAndAmount.product.photo),
+          image: AssetImage(productsAndAmount.product.photo),
           height: 180,
         ),
         Positioned(
           top: 8,
           right: 8,
-          child: InkWell(
-            onTap: () {
-              setState(() {
-                if (productsAndAmount.amount > 1) {
-                  productsAndAmount.amount--;
-                  totalSum = totalSum -
-                      int.parse(productsAndAmount
-                          .product.price);
-                } else {
-                  ProductsMock.saveProducts
-                      .remove(productsAndAmount);
-                  totalSum = totalSum -
-                      int.parse(productsAndAmount
-                          .product.price);
-                }
-              });
-            },
-            child: Container(
-              padding: const EdgeInsets.all(4),
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-              ),
-              child: const Icon(
-                Icons.remove,
-                color: Colors.black54,
-                size: 16,
-              ),
-            ),
-          ),
+          child: _buildRemoveButton(productsAndAmount),
         ),
       ],
     );
   }
-  Widget _buildTileProduct(productsAndAmount){
+
+  Widget _buildRemoveButton(ProductInCartModel productsAndAmount) {
+    return InkWell(
+      onTap: () {
+        setState(
+          () {
+            if (productsAndAmount.amount > 1) {
+              productsAndAmount.amount--;
+              totalSum = totalSum - int.parse(productsAndAmount.product.price);
+            } else {
+              ProductsMock.saveProducts.remove(productsAndAmount);
+              totalSum = totalSum - int.parse(productsAndAmount.product.price);
+            }
+          },
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(4),
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: AppColors.containerColor,
+        ),
+        child: const Icon(
+          Icons.remove,
+          color: AppColors.iconRemove,
+          size: 16,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTileProduct(ProductInCartModel productsAndAmount) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -148,9 +159,7 @@ class _CartPageState extends State<CartPage> {
         ),
         Text(
           '${productsAndAmount.amount.toString()} items',
-          style: const TextStyle(
-            color: Colors.black38,
-          ),
+          style: TextStyles.amountItemsText,
         ),
         Text(
           '${int.parse(productsAndAmount.product.price) * productsAndAmount.amount} \$',
@@ -159,10 +168,11 @@ class _CartPageState extends State<CartPage> {
       ],
     );
   }
-  Widget _buildButtonBuy(){
+
+  Widget _buildButtonBuy() {
     return Container(
       height: 40,
-      color: const Color(0xFF2E7D32),
+      color: AppColors.buyAllButton,
       width: 340,
       child: InkWell(
         onTap: () => _resetCart(),
@@ -171,26 +181,23 @@ class _CartPageState extends State<CartPage> {
           children: const [
             Icon(
               Icons.shopping_bag_outlined,
-              color: Colors.white,
+              color: AppColors.iconBuyAll,
               size: 28,
             ),
             SizedBox(
               width: 8,
             ),
             Text(
-              'BUY ALL',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-              ),
+              AppStrings.buyAll,
+              style: TextStyles.buyAllText,
             ),
           ],
         ),
       ),
     );
   }
-  Widget _buildTotalPriceBar(){
+
+  Widget _buildTotalPriceBar() {
     return Positioned(
       bottom: 4,
       left: 0,
@@ -205,7 +212,7 @@ class _CartPageState extends State<CartPage> {
             borderRadius: BorderRadius.all(
               Radius.circular(32),
             ),
-            color: Colors.black12,
+            color: AppColors.containerBuyAll,
           ),
           width: double.infinity,
           child: Padding(

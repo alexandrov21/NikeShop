@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
 import '../../../mocks/products_mock.dart';
 import '../../../models/products_model.dart';
+import '../../../utils/app_colors.dart';
 import '../../../utils/text_styles.dart';
 
 class NikeProducts extends StatefulWidget {
@@ -91,11 +91,11 @@ class _NikeProductsState extends State<NikeProducts> {
             padding: const EdgeInsets.all(4),
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.white,
+              color: AppColors.containerColor,
             ),
             child: const Icon(
               Icons.favorite_border,
-              color: Colors.black54,
+              color: AppColors.iconFavorite,
               size: 16,
             ),
           ),

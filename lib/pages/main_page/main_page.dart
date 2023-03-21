@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:task_2/models/value_setter_model.dart';
 import 'package:task_2/utils/image_path.dart';
 import 'package:task_2/pages/main_page/views/nike_products.dart';
+import '../../utils/app_colors.dart';
+import '../../utils/app_strings.dart';
 import '../../utils/text_styles.dart';
 
 class MainPage extends StatefulWidget {
@@ -12,38 +13,12 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  // int count = 0;
-  // int totalSum = 0;
-
-  // void checkForOperationAndValue(ValueSetterModel params) {
-  //   setState(() {
-  //     if (params.isIncrement == true) {
-  //       count++;
-  //       totalSum = totalSum + params.price;
-  //     } else {
-  //       count = count - 1;
-  //       totalSum = totalSum - params.price;
-  //     }
-  //   });
-  // }
-
-
-
-  // void _resetValue() {
-  //   setState(() {
-  //     for (var i = 0; i < ProductsMock.products.length; i++) {
-  //       ProductsMock.products[i].color = Colors.white;
-  //     }
-  //     count = 0;
-  //     totalSum = 0;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.appBarBackground,
         elevation: 0,
         title: const Align(
           alignment: Alignment.center,
@@ -56,20 +31,6 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
         actions: [
-          // Column(
-          //   mainAxisSize: MainAxisSize.min,
-          //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-          //   children: [
-          //     Text(
-          //       'Items: $count',
-          //       style: TextStyles.itemCounterText,
-          //     ),
-          //     Text(
-          //       'Total Price: $totalSum \$',
-          //       style: TextStyles.totalPriceCounterText,
-          //     ),
-          //   ],
-          // ),
           IconButton(
             splashRadius: 16,
             onPressed: () {
@@ -79,7 +40,7 @@ class _MainPageState extends State<MainPage> {
             },
             icon: const Icon(
               Icons.shopping_cart_outlined,
-              color: Colors.black,
+              color: AppColors.iconCart,
             ),
           ),
         ],
@@ -90,7 +51,6 @@ class _MainPageState extends State<MainPage> {
           _buildFiltersAndSorting(),
           const SizedBox(height: 12),
           const NikeProducts(
-            //outputData: (params) => checkForOperationAndValue(params),
           ),
         ],
       ),
@@ -111,7 +71,7 @@ class _MainPageState extends State<MainPage> {
               Icon(Icons.list_outlined),
               SizedBox(width: 8),
               Text(
-                'FILTERS',
+                AppStrings.filters,
                 style: TextStyles.mainPageFiltersText,
               ),
             ],
@@ -129,7 +89,7 @@ class _MainPageState extends State<MainPage> {
               ),
               SizedBox(width: 8),
               Text(
-                'SORTING',
+                AppStrings.sorting,
                 style: TextStyles.mainPageSortingText,
               ),
             ],
