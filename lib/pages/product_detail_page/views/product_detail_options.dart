@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_2/pages/product_detail_page/product_detail_page.dart';
+import 'package:task_2/mocks/product_detail_mock.dart';
 
 class ProductDetailOptions extends StatelessWidget {
   const ProductDetailOptions({Key? key}) : super(key: key);
@@ -7,9 +7,9 @@ class ProductDetailOptions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: ProductDetailPage.options.map((options) {
+      children: ProductDetailMock.options.map((options) {
         return Padding(
-          padding: const EdgeInsets.only(left: 12, right: 12, top: 8, bottom: 8,),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           child: Column(
             children: [
               Row(

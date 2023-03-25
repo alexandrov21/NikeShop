@@ -14,24 +14,23 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
-  int totalSum = 0;
+  int totalPrice = 0;
 
   @override
   void initState() {
     super.initState();
-    totalSum = _calculateTotalSum();
+    totalPrice = _calculateTotalSum();
   }
 
   int _calculateTotalSum() {
     int totalSum = 0;
     for (int i = 0; i < ProductsMock.saveProducts.length; i++) {
-      if (ProductsMock.saveProducts[i].amount > 1) {
-        totalSum = totalSum +
-            (int.parse(ProductsMock.saveProducts[i].product.price) *
-                ProductsMock.saveProducts[i].amount);
+      int saveProductsAmount = ProductsMock.saveProducts[i].amount;
+      var saveProductsPrice = ProductsMock.saveProducts[i].product.price;
+      if (saveProductsAmount > 1) {
+        totalSum += (int.parse(saveProductsPrice) * saveProductsAmount);
       } else {
-        totalSum =
-            totalSum + int.parse(ProductsMock.saveProducts[i].product.price);
+        totalSum += int.parse(saveProductsPrice);
       }
     }
     return totalSum;
@@ -39,7 +38,7 @@ class _CartPageState extends State<CartPage> {
 
   void _resetCart() {
     setState(() {
-      totalSum = 0;
+      totalPrice = 0;
       ProductsMock.saveProducts.clear();
     });
   }
@@ -125,10 +124,10 @@ class _CartPageState extends State<CartPage> {
           () {
             if (productsAndAmount.amount > 1) {
               productsAndAmount.amount--;
-              totalSum = totalSum - int.parse(productsAndAmount.product.price);
+              totalPrice -= int.parse(productsAndAmount.product.price);
             } else {
               ProductsMock.saveProducts.remove(productsAndAmount);
-              totalSum = totalSum - int.parse(productsAndAmount.product.price);
+              totalPrice -= int.parse(productsAndAmount.product.price);
             }
           },
         );
@@ -137,7 +136,7 @@ class _CartPageState extends State<CartPage> {
         padding: const EdgeInsets.all(4),
         decoration: const BoxDecoration(
           shape: BoxShape.circle,
-          color: AppColors.containerColor,
+          color: AppColors.containerLabel,
         ),
         child: const Icon(
           Icons.remove,
@@ -155,7 +154,7 @@ class _CartPageState extends State<CartPage> {
         _buildTileImage(productsAndAmount),
         Text(
           productsAndAmount.product.name,
-          style: TextStyles.nameText,
+          style: TextStyles.productNameText,
         ),
         Text(
           '${productsAndAmount.amount.toString()} items',
@@ -223,7 +222,7 @@ class _CartPageState extends State<CartPage> {
             child: Column(
               children: [
                 Text(
-                  'Total Price : $totalSum \$',
+                  'Total Price : $totalPrice \$',
                   style: TextStyles.totalPriceText,
                 ),
                 const SizedBox(

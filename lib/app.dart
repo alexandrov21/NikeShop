@@ -18,8 +18,8 @@ class App extends StatelessWidget {
       ),
       routes: {
         '/main': (context) => const MainPage(),
-        '/second': (context, {arguments}) => const ProductDetailPage(),
-        '/third' : (context, {arguments}) => const CartPage(),
+        '/detail': (context, {arguments}) => const ProductDetailPage(),
+        '/cart' : (context, {arguments}) => const CartPage(),
       },
       initialRoute: '/main',
       home: const MainPage(),

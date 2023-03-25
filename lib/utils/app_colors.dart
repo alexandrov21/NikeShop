@@ -5,8 +5,8 @@ abstract class AppColors{
   static const scaffoldBackground = Colors.grey;
   static const appBarBackground = Colors.white;
   static const iconFavorite = Colors.black54;
-  static const containerColor = Colors.white;
-  static const dividerColor = Colors.grey;
+  static const containerLabel = Colors.white;
+  static const divider = Colors.grey;
   static const iconInfoBonuses = Colors.black54;
   static const addingToCartButton = Color(0xFF2E7D32);
   static const iconAddToCart = Colors.white;

@@ -20,7 +20,7 @@ abstract class TextStyles {
     fontSize: 14,
   );
 
-  static const nameText = TextStyle(
+  static const productNameText = TextStyle(
     fontSize: 15,
     color: Colors.black54,
   );

@@ -2,34 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:task_2/mocks/products_mock.dart';
 import 'package:task_2/models/products_model.dart';
 import 'package:task_2/pages/product_detail_page/views/product_detail_options.dart';
-
 import '../../models/product_in_cart_model.dart';
-import '../../models/products_options_model.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_strings.dart';
 import '../../utils/text_styles.dart';
 
 class ProductDetailPage extends StatefulWidget {
   const ProductDetailPage({Key? key}) : super(key: key);
-
-  static List<ProductsOptionsModel> options = [
-    ProductsOptionsModel(
-      Icons.house_outlined,
-      'Availability in stores',
-    ),
-    ProductsOptionsModel(
-      Icons.messenger_outline,
-      'Reviews',
-    ),
-    ProductsOptionsModel(
-      Icons.question_answer_outlined,
-      'Questions and answers',
-    ),
-    ProductsOptionsModel(
-      Icons.delivery_dining_outlined,
-      'Payment, delivery, return',
-    ),
-  ];
 
   @override
   State<ProductDetailPage> createState() => _ProductDescriptionState();
@@ -63,7 +42,8 @@ class _ProductDescriptionState extends State<ProductDetailPage> {
   @override
   Widget build(BuildContext context) {
     final product =
-        (ModalRoute.of(context)?.settings.arguments) as ProductsModel?;
+        (ModalRoute.of(context)?.settings.arguments) as ProductsModel? ??
+            ProductsModel.empty();
     return Scaffold(
       backgroundColor: AppColors.scaffoldBackground,
       appBar: AppBar(
@@ -73,7 +53,7 @@ class _ProductDescriptionState extends State<ProductDetailPage> {
         title: Align(
           alignment: Alignment.center,
           child: Text(
-            product?.name ?? '',
+            product.name,
             style: TextStyles.productDetailPageNameText,
           ),
         ),
@@ -101,7 +81,7 @@ class _ProductDescriptionState extends State<ProductDetailPage> {
           ),
         ],
       ),
-      body: _buildBody(product!),
+      body: _buildBody(product),
     );
   }
 
@@ -109,7 +89,7 @@ class _ProductDescriptionState extends State<ProductDetailPage> {
     return ListView(
       children: [
         Container(
-          color: AppColors.containerColor,
+          color: AppColors.containerLabel,
           width: double.infinity,
           child: Column(
             children: [
@@ -135,7 +115,7 @@ class _ProductDescriptionState extends State<ProductDetailPage> {
           height: 12,
         ),
         Container(
-          color: AppColors.containerColor,
+          color: AppColors.containerLabel,
           width: double.infinity,
           child: const ProductDetailOptions(),
         ),
@@ -150,7 +130,7 @@ class _ProductDescriptionState extends State<ProductDetailPage> {
   Widget _buildDivider() {
     return const Divider(
       height: 3,
-      color: AppColors.dividerColor,
+      color: AppColors.divider,
       indent: 20,
       endIndent: 20,
     );
@@ -265,23 +245,15 @@ class _ProductDescriptionState extends State<ProductDetailPage> {
   }
 
   Widget _buildAddingToCartButton(ProductsModel product) {
-    return Container(
-      height: 40,
-      decoration: const BoxDecoration(
-        color: AppColors.addingToCartButton,
-        border: Border(
-          left: BorderSide(
-            width: 16,
-            color: AppColors.containerColor,
-          ),
-          right: BorderSide(
-            width: 16,
-            color: AppColors.containerColor,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(
+            AppColors.addingToCartButton,
           ),
         ),
-      ),
-      child: InkWell(
-        onTap: () => _addingToCart(product),
+        onPressed: () => _addingToCart(product),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [

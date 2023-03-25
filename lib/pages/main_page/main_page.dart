@@ -35,7 +35,7 @@ class _MainPageState extends State<MainPage> {
             splashRadius: 16,
             onPressed: () {
               Navigator.of(context).pushNamed(
-                '/third',
+                '/cart',
               );
             },
             icon: const Icon(

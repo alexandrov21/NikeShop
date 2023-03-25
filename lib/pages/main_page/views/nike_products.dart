@@ -32,7 +32,7 @@ class _NikeProductsState extends State<NikeProducts> {
                   child: InkWell(
                     onTap: () {
                       Navigator.of(context).pushNamed(
-                        '/second',
+                        '/detail',
                         arguments: product,
                       );
                     },
@@ -57,7 +57,7 @@ class _NikeProductsState extends State<NikeProducts> {
         ),
         Text(
           product.name,
-          style: TextStyles.nameText,
+          style: TextStyles.productNameText,
         ),
         const SizedBox(
           height: 4,
@@ -91,7 +91,7 @@ class _NikeProductsState extends State<NikeProducts> {
             padding: const EdgeInsets.all(4),
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
-              color: AppColors.containerColor,
+              color: AppColors.containerLabel,
             ),
             child: const Icon(
               Icons.favorite_border,
@@ -99,13 +99,6 @@ class _NikeProductsState extends State<NikeProducts> {
               size: 16,
             ),
           ),
-        ),
-        Container(
-          height: 180,
-          width: 180,
-          color: product.color == Colors.grey.withOpacity(0.3)
-              ? Colors.grey.withOpacity(0.5)
-              : null,
         ),
       ],
     );
