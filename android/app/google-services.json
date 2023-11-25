@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "985935284126",
+    "project_id": "nikeshop-87a52",
+    "storage_bucket": "nikeshop-87a52.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:985935284126:android:f89476d4085e670597b88f",
+        "android_client_info": {
+          "package_name": "com.example.task_2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkRK0pxwcUPoQBcaOV5ezI6U-wARkch9k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

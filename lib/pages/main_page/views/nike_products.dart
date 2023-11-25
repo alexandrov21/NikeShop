@@ -1,53 +1,77 @@
 import 'package:flutter/material.dart';
+import 'package:task_2/services/firebase_products_service.dart';
 import '../../../mocks/products_mock.dart';
 import '../../../models/products_model.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/text_styles.dart';
 
 class NikeProducts extends StatefulWidget {
-
-  const NikeProducts({Key? key,}) : super(key: key);
+  const NikeProducts({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<NikeProducts> createState() => _NikeProductsState();
 }
 
 class _NikeProductsState extends State<NikeProducts> {
+  final _firebaseProductsService = FirebaseProductsService();
+
+  Future<List<ProductModel>> _getAllProducts() async {
+    return await _firebaseProductsService.getAllProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 3),
-      child: Wrap(
-        children: ProductsMock.products.map(
-          (product) {
-            return Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(
-                  width: 4,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  color: product.color,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamed(
-                        '/detail',
-                        arguments: product,
-                      );
-                    },
-                    child: _buildTileProduct(product),
-                  ),
-                ),
-              ],
+    return FutureBuilder<List<ProductModel>>(
+      future: _getAllProducts(),
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.done:
+            return _buildProducts(snapshot.data ?? []);
+
+          default:
+            return const Center(
+              child: CircularProgressIndicator(),
             );
-          },
-        ).toList(),
-      ),
+        }
+      },
     );
   }
 
-  Widget _buildTileProduct(ProductsModel product) {
+  Widget _buildProducts(List<ProductModel> products) {
+    return Padding(
+        padding: const EdgeInsets.only(left: 3),
+        child: Wrap(
+          children: products.map(
+            (product) {
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(4),
+                    color: product.isSelect ? Colors.black87 : Colors.white,
+                    child: InkWell(
+                      onTap: () {
+                        final isSelect = Navigator.of(context).pushNamed(
+                          '/detail',
+                          arguments: product,
+                        );
+                      },
+                      child: _buildTileProduct(product),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ).toList(),
+        ));
+  }
+
+  Widget _buildTileProduct(ProductModel product) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -77,7 +101,7 @@ class _NikeProductsState extends State<NikeProducts> {
     );
   }
 
-  Widget _buildTileImage(ProductsModel product) {
+  Widget _buildTileImage(ProductModel product) {
     return Stack(
       children: [
         Image(

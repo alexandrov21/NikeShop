@@ -1,4 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:task_2/services/firebase_products_service.dart';
 import 'package:task_2/utils/image_path.dart';
 import 'package:task_2/pages/main_page/views/nike_products.dart';
 import '../../utils/app_colors.dart';
@@ -13,6 +15,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  final firebaseProductsService = FirebaseProductsService();
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +53,7 @@ class _MainPageState extends State<MainPage> {
         children: [
           _buildFiltersAndSorting(),
           const SizedBox(height: 12),
-          const NikeProducts(
-          ),
+          const NikeProducts(),
         ],
       ),
     );

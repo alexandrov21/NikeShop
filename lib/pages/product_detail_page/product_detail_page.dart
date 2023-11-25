@@ -15,7 +15,7 @@ class ProductDetailPage extends StatefulWidget {
 }
 
 class _ProductDescriptionState extends State<ProductDetailPage> {
-  void _addingToCart(ProductsModel? product) {
+  void _addingToCart(ProductModel? product) {
     int index = 0;
     bool hasProductInCart = false;
     for (int i = 0; i < ProductsMock.saveProducts.length; i++) {
@@ -29,7 +29,7 @@ class _ProductDescriptionState extends State<ProductDetailPage> {
     } else {
       ProductsMock.saveProducts.add(
         ProductInCartModel(
-          product ?? ProductsModel.empty(),
+          product ?? ProductModel.empty(),
         ),
       );
     }
@@ -42,8 +42,8 @@ class _ProductDescriptionState extends State<ProductDetailPage> {
   @override
   Widget build(BuildContext context) {
     final product =
-        (ModalRoute.of(context)?.settings.arguments) as ProductsModel? ??
-            ProductsModel.empty();
+        (ModalRoute.of(context)?.settings.arguments) as ProductModel? ??
+            ProductModel.empty();
     return Scaffold(
       backgroundColor: AppColors.scaffoldBackground,
       appBar: AppBar(
@@ -57,11 +57,11 @@ class _ProductDescriptionState extends State<ProductDetailPage> {
             style: TextStyles.productDetailPageNameText,
           ),
         ),
-        actions: [
+        actions: const [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.min,
-            children: const [
+            children: [
               Icon(
                 Icons.favorite_border,
                 color: AppColors.iconFavorite,
@@ -85,7 +85,7 @@ class _ProductDescriptionState extends State<ProductDetailPage> {
     );
   }
 
-  Widget _buildBody(ProductsModel product) {
+  Widget _buildBody(ProductModel product) {
     return ListView(
       children: [
         Container(
@@ -137,11 +137,11 @@ class _ProductDescriptionState extends State<ProductDetailPage> {
   }
 
   Widget _buildSelectingSize() {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
+    return const Padding(
+      padding: EdgeInsets.all(4.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
+        children: [
           Icon(
             Icons.height,
             color: AppColors.iconSelectSize,
@@ -156,11 +156,11 @@ class _ProductDescriptionState extends State<ProductDetailPage> {
   }
 
   Widget _buildBuyInOneClick() {
-    return Padding(
-      padding: const EdgeInsets.all(36),
+    return const Padding(
+      padding: EdgeInsets.all(36),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
+        children: [
           Icon(
             Icons.touch_app_outlined,
           ),
@@ -176,7 +176,7 @@ class _ProductDescriptionState extends State<ProductDetailPage> {
     );
   }
 
-  Widget _buildDescriptions(ProductsModel product) {
+  Widget _buildDescriptions(ProductModel product) {
     return Container(
       color: Colors.white,
       width: double.infinity,
@@ -191,7 +191,7 @@ class _ProductDescriptionState extends State<ProductDetailPage> {
     );
   }
 
-  Widget _buildProductPriceAndBonuses(ProductsModel product) {
+  Widget _buildProductPriceAndBonuses(ProductModel product) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 24, 20, 12),
       child: Row(
@@ -201,8 +201,8 @@ class _ProductDescriptionState extends State<ProductDetailPage> {
             '${product.price} \$',
             style: TextStyles.productDetailPagePriceText,
           ),
-          Row(
-            children: const [
+          const Row(
+            children: [
               Icon(
                 Icons.info_outline_rounded,
                 color: AppColors.iconInfoBonuses,
@@ -222,7 +222,7 @@ class _ProductDescriptionState extends State<ProductDetailPage> {
     );
   }
 
-  Widget _buildProductSizes(ProductsModel product) {
+  Widget _buildProductSizes(ProductModel product) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Column(
@@ -244,7 +244,7 @@ class _ProductDescriptionState extends State<ProductDetailPage> {
     );
   }
 
-  Widget _buildAddingToCartButton(ProductsModel product) {
+  Widget _buildAddingToCartButton(ProductModel product) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: ElevatedButton(
@@ -253,10 +253,12 @@ class _ProductDescriptionState extends State<ProductDetailPage> {
             AppColors.addingToCartButton,
           ),
         ),
-        onPressed: () => _addingToCart(product),
-        child: Row(
+        onPressed: () {
+          _addingToCart(product);
+        },
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             Icon(
               Icons.shopping_bag_outlined,
               color: AppColors.iconAddToCart,
