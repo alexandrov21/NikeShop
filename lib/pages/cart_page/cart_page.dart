@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_2/mocks/products_mock.dart';
-import 'package:task_2/models/product_in_cart_model.dart';
+import 'package:task_2/models/products_model.dart';
+import 'package:task_2/services/firebase_products_service.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_strings.dart';
 import '../../utils/image_path.dart';
@@ -14,32 +15,31 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
+  final _firebaseProductsService = FirebaseProductsService();
   int totalPrice = 0;
 
   @override
   void initState() {
     super.initState();
-    totalPrice = _calculateTotalSum();
   }
 
-  int _calculateTotalSum() {
+  Future<List<ProductModel>> _getAllProductsInCart() async {
+    return await _firebaseProductsService.getAllProductsInCart();
+  }
+
+  int _calculateTotalSum(List<ProductModel> products) {
     int totalSum = 0;
-    for (int i = 0; i < ProductsMock.saveProducts.length; i++) {
-      int saveProductsAmount = ProductsMock.saveProducts[i].amount;
-      var saveProductsPrice = ProductsMock.saveProducts[i].product.price;
-      if (saveProductsAmount > 1) {
-        totalSum += (int.parse(saveProductsPrice) * saveProductsAmount);
-      } else {
-        totalSum += int.parse(saveProductsPrice);
-      }
+    for (var product in products) {
+      totalSum += int.tryParse(product.price) ?? 0;
     }
+
     return totalSum;
   }
 
-  void _resetCart() {
+  Future<void> _resetCart() async {
+    await _firebaseProductsService.deleteCollection();
     setState(() {
       totalPrice = 0;
-      ProductsMock.saveProducts.clear();
     });
   }
 
@@ -63,11 +63,24 @@ class _CartPageState extends State<CartPage> {
           ),
         ),
       ),
-      body: _buildBody(),
+      body: FutureBuilder<List<ProductModel>>(
+        future: _getAllProductsInCart(),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.done:
+              return _buildBody(snapshot.data ?? []);
+
+            default:
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+          }
+        },
+      ),
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(List<ProductModel> products) {
     return Stack(
       children: [
         ListView(
@@ -75,7 +88,7 @@ class _CartPageState extends State<CartPage> {
             Padding(
               padding: const EdgeInsets.only(left: 8),
               child: Wrap(
-                children: ProductsMock.saveProducts.map(
+                children: products.map(
                   (productsAndAmount) {
                     return Row(
                       mainAxisSize: MainAxisSize.min,
@@ -96,41 +109,44 @@ class _CartPageState extends State<CartPage> {
             ),
           ],
         ),
-        _buildTotalPriceBar(),
+        _buildTotalPriceBar(products),
       ],
     );
   }
 
-  Widget _buildTileImage(ProductInCartModel productsAndAmount) {
+  Widget _buildTileImage(ProductModel product) {
     return Stack(
       children: [
         Image(
-          image: AssetImage(productsAndAmount.product.photo),
+          image: AssetImage(product.photo),
           height: 180,
         ),
         Positioned(
           top: 8,
           right: 8,
-          child: _buildRemoveButton(productsAndAmount),
+          child: _buildRemoveButton(product),
         ),
       ],
     );
   }
 
-  Widget _buildRemoveButton(ProductInCartModel productsAndAmount) {
+  Widget _buildRemoveButton(ProductModel product) {
     return InkWell(
-      onTap: () {
-        setState(
-          () {
-            if (productsAndAmount.amount > 1) {
-              productsAndAmount.amount--;
-              totalPrice -= int.parse(productsAndAmount.product.price);
-            } else {
-              ProductsMock.saveProducts.remove(productsAndAmount);
-              totalPrice -= int.parse(productsAndAmount.product.price);
-            }
-          },
-        );
+      onTap: () async {
+        await _firebaseProductsService.removeProductFromCart(product);
+        setState(() {});
+
+        // setState(
+        //   () {
+        //     if (productsAndAmount.amount > 1) {
+        //       productsAndAmount.amount--;
+        //       totalPrice -= int.parse(productsAndAmount.product.price);
+        //     } else {
+        //       ProductsMock.saveProducts.remove(productsAndAmount);
+        //       totalPrice -= int.parse(productsAndAmount.product.price);
+        //     }
+        //   },
+        // );
       },
       child: Container(
         padding: const EdgeInsets.all(4),
@@ -147,21 +163,22 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  Widget _buildTileProduct(ProductInCartModel productsAndAmount) {
+  // TODO : refactor with amount
+  Widget _buildTileProduct(ProductModel product) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildTileImage(productsAndAmount),
+        _buildTileImage(product),
         Text(
-          productsAndAmount.product.name,
+          product.name,
           style: TextStyles.productNameText,
         ),
-        Text(
-          '${productsAndAmount.amount.toString()} items',
+        const Text(
+          '1 items',
           style: TextStyles.amountItemsText,
         ),
         Text(
-          '${int.parse(productsAndAmount.product.price) * productsAndAmount.amount} \$',
+          '${int.parse(product.price) * 1} \$',
           style: TextStyles.priceText,
         ),
       ],
@@ -174,10 +191,10 @@ class _CartPageState extends State<CartPage> {
       color: AppColors.buyAllButton,
       width: 340,
       child: InkWell(
-        onTap: () => _resetCart(),
-        child: Row(
+        onTap: () async => await _resetCart(),
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             Icon(
               Icons.shopping_bag_outlined,
               color: AppColors.iconBuyAll,
@@ -196,7 +213,8 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  Widget _buildTotalPriceBar() {
+  Widget _buildTotalPriceBar(List<ProductModel> products) {
+    totalPrice = _calculateTotalSum(products);
     return Positioned(
       bottom: 4,
       left: 0,

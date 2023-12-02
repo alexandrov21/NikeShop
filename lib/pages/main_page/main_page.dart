@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:task_2/services/firebase_products_service.dart';
 import 'package:task_2/utils/image_path.dart';
@@ -60,16 +59,16 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _buildFiltersAndSorting() {
-    return Row(
+    return const Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Padding(
-          padding: const EdgeInsets.only(
+          padding: EdgeInsets.only(
             left: 48,
             top: 20,
           ),
           child: Row(
-            children: const [
+            children: [
               Icon(Icons.list_outlined),
               SizedBox(width: 8),
               Text(
@@ -80,12 +79,12 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(
+          padding: EdgeInsets.only(
             right: 48,
             top: 20,
           ),
           child: Row(
-            children: const [
+            children: [
               Icon(
                 Icons.signal_cellular_alt_outlined,
               ),

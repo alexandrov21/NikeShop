@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:task_2/services/firebase_products_service.dart';
-import '../../../mocks/products_mock.dart';
 import '../../../models/products_model.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/text_styles.dart';

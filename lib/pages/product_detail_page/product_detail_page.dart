@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:task_2/mocks/products_mock.dart';
 import 'package:task_2/models/products_model.dart';
 import 'package:task_2/pages/product_detail_page/views/product_detail_options.dart';
+import 'package:task_2/services/firebase_products_service.dart';
 import '../../models/product_in_cart_model.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_strings.dart';
@@ -15,6 +16,8 @@ class ProductDetailPage extends StatefulWidget {
 }
 
 class _ProductDescriptionState extends State<ProductDetailPage> {
+  final _firebaseProductsService = FirebaseProductsService();
+
   void _addingToCart(ProductModel? product) {
     int index = 0;
     bool hasProductInCart = false;
@@ -253,8 +256,9 @@ class _ProductDescriptionState extends State<ProductDetailPage> {
             AppColors.addingToCartButton,
           ),
         ),
-        onPressed: () {
-          _addingToCart(product);
+        onPressed: () async {
+          // _addingToCart(product);
+          await _firebaseProductsService.addProductToCart(product);
         },
         child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
